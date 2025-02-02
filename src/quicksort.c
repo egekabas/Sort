@@ -2,19 +2,19 @@
 #include "util.h"
 #include "sort.h"
 
-void quicksort(int *a, int a_len) {
+void quicksort(sort_t *a, size_t a_len) {
   if(a_len <= 15) {
     insertion_sort(a, a_len);
     return;
   }
   
-  int pivot_idx = rand()%a_len;
+  size_t pivot_idx = rand()%a_len;
 
   swap(a, a + pivot_idx);
   pivot_idx = 0;
-  int pivot = a[pivot_idx];
+  size_t pivot = a[pivot_idx];
 
-  for (int i = 1; i < a_len; ++i) {
+  for (size_t i = 1; i < a_len; ++i) {
     if (a[i] < pivot) {
       swap(a + i, a + pivot_idx + 1);
       swap(a + pivot_idx, a + pivot_idx + 1);

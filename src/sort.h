@@ -1,16 +1,24 @@
 #ifndef SORT_H
 #define SORT_H
 
-void insertion_sort(int *a, int a_len);
+#include <stdint.h>
+#include <stddef.h>
 
-void mergesort(int *a, int a_len);
-void quicksort(int *a, int a_len);
-void heapsort(int *a, int a_len);
+// only support unsigned integer types
 
-void sample_sort(int *a, int a_len, void *(*sort) (void *));
-void sample_sort_with_qs(int *a, int a_len);
-void sample_sort_with_mergesort(int *a, int a_len);
+// typedef uint64_t sort_t;
+typedef uint32_t sort_t;
+// typedef uint16_t sort_t;
+// typedef uint8_t sort_t;
 
+void insertion_sort(sort_t *a, size_t a_len);
 
+void mergesort(sort_t *a, size_t a_len);
+void quicksort(sort_t *a, size_t a_len);
+void heapsort(sort_t *a, size_t a_len);
+
+void sample_sort(sort_t *a, size_t a_len, void *(*sort) (void *));
+void sample_sort_with_qs(sort_t *a, size_t a_len);
+void sample_sort_with_mergesort(sort_t *a, size_t a_len);
 
 #endif

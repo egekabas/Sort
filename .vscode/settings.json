@@ -3,6 +3,26 @@
     "*.ms": "bsv",
     "stdio.h": "c",
     "stdlib.h": "c",
-    "sort.h": "c"
+    "sort.h": "c",
+    "array": "cpp",
+    "*.tcc": "cpp",
+    "concepts": "cpp",
+    "deque": "cpp",
+    "string": "cpp",
+    "unordered_map": "cpp",
+    "vector": "cpp",
+    "memory": "cpp",
+    "optional": "cpp",
+    "string_view": "cpp",
+    "fstream": "cpp",
+    "istream": "cpp",
+    "ostream": "cpp",
+    "sstream": "cpp",
+    "streambuf": "cpp",
+    "functional": "cpp",
+    "tuple": "cpp",
+    "type_traits": "cpp",
+    "variant": "cpp",
+    "utility": "cpp"
   }
 }

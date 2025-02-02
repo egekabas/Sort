@@ -15,9 +15,9 @@ int main(int argc, char *argv[]) {
     return 1;
   }
 
-  int a_len = atoi(argv[1]);
-  int *a = (int *)malloc(a_len * sizeof(int));
-  for (int i = 0; i < a_len; ++i) {
+  size_t a_len = atoi(argv[1]);
+  sort_t *a = (sort_t *)malloc(a_len * sizeof(sort_t));
+  for (size_t i = 0; i < a_len; ++i) {
     a[i] = rand() % (a_len * 10);
   }
 

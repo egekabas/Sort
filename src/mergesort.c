@@ -4,23 +4,23 @@
 #include "util.h"
 #include "sort.h"
 
-void mergesort(int *a, int a_len) {
+void mergesort(sort_t *a, size_t a_len) {
   if (a_len <= 15) {
     insertion_sort(a, a_len);
     return;
   }
 
-  int left_len = a_len/2;
-  int *left = a;
+  size_t left_len = a_len/2;
+  sort_t *left = a;
 
-  int right_len = a_len-left_len;
-  int *right = a + left_len;
+  size_t right_len = a_len-left_len;
+  sort_t *right = a + left_len;
 
   mergesort(left, left_len);
   mergesort(right, right_len);
 
-  int *tmp = (int *)malloc(a_len * sizeof(int));
+  sort_t *tmp = (sort_t *)malloc(a_len * sizeof(sort_t));
   merge(left, left_len, right, right_len, tmp);
-  memcpy(a, tmp, a_len * sizeof(int));
+  memcpy(a, tmp, a_len * sizeof(sort_t));
   free(tmp);
 }
