@@ -25,70 +25,59 @@ void *mergesort_for_thread(void *arg) {
 }
 
 void sample_sort(sort_t *a, size_t a_len, void *(*sort) (void *)) {
-  if (a_len < 100) {
+  size_t threshold = IS_DEBUG ? 10 : 1000;
+  if (a_len <  threshold) {
     quicksort(a, a_len);
     return;
   }
-  
-  //sample random idx
-  size_t sample_idx[BUCKET_CNT-1];
-  for (size_t i = 0; i < BUCKET_CNT - 1; ++i) {
-    while (true){
-      sample_idx[i] = rand()%a_len;
-      bool same = false;
-      for (size_t j = 0; j < i; ++j) {
-        same |= sample_idx[j] == sample_idx[i];
-      }
-      if(!same) {break;}
-    }
+
+  //random samples
+  sort_t samples[BUCKET_CNT-1];
+  for (size_t i = 0; i < BUCKET_CNT-1; ++i) {
+    samples[i] = a[rand() % a_len];
   }
-
-  //sort random idx based on value in a
-  for (size_t i = 1; i < BUCKET_CNT-1; ++i) {
-    size_t j = i;
-    while (j > 0 && a[sample_idx[j]] < a[sample_idx[j-1]]) {
-      // swap(sample_idx + j, sample_idx + j - 1);
-
-      size_t tmp = sample_idx[j];
-      sample_idx[j] = sample_idx[j-1];
-      sample_idx[j-1] = tmp;
-      
-
-      --j;
-    }
-  }
-
-  //swap so values in the random idx come to the beginning
-  for (size_t i = 0; i < BUCKET_CNT - 1; ++i) {
-    swap(a + i, a + sample_idx[i]);
-    for (size_t j = i+1; j < BUCKET_CNT - 1; ++j) {
-      if (sample_idx[j] == i) {
-        sample_idx[j] = sample_idx[i];
-      }
-    }
-  }
+  insertion_sort(samples, BUCKET_CNT-1);
 
   size_t bucket_beg[BUCKET_CNT-1];
   for (size_t i = 0; i < BUCKET_CNT-1; ++i) {
-    bucket_beg[i] = i;
+    bucket_beg[i] = 0;
   }
 
-  // divide into the buckets
-  for (size_t i = BUCKET_CNT - 1; i < a_len; ++i) {
+  IF_DEBUG(
+    printf("Array: ");
+    print_array(a, a_len);
+
+    printf("Samples: ");
+    print_array(samples, BUCKET_CNT-1);
+  );
+
+  for (size_t i = 0; i < a_len; ++i) {
     size_t cur_idx = i;
-    
-    for (size_t bucket = BUCKET_CNT - 2;; --bucket) {
-      if (a[cur_idx] >= a[bucket_beg[bucket]]) {break;}
-
-      swap(a + cur_idx, a + bucket_beg[bucket] + 1);
-      swap(a + bucket_beg[bucket], a + bucket_beg[bucket] + 1);
-
+    for (size_t bucket = BUCKET_CNT - 2;;--bucket) {
+      IF_DEBUG(
+        print_element(a[cur_idx]);
+        printf(" ");
+        print_element(samples[bucket]);
+        printf("\n");
+      );
+      if (a[cur_idx] >= samples[bucket]) {break;}
+      swap(a + cur_idx, a + bucket_beg[bucket]);
       cur_idx = bucket_beg[bucket];
       bucket_beg[bucket] += 1;
-
-      if (bucket == 0){break;}
+      if (bucket == 0) {break;}
     }
   }
+
+  IF_DEBUG(
+    printf("Array after partitioning: ");
+    print_array(a, a_len);
+  
+    printf("Buckets: ");
+    for (size_t i = 0; i < BUCKET_CNT-1; ++i) {
+      printf("%lu", i);
+    }
+    printf("\n");
+  );
 
   thread_job jobs[BUCKET_CNT];
   size_t cur_beg = 0;

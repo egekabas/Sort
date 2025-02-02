@@ -19,9 +19,12 @@ void print_element(sort_t x) {
 }
 
 void print_array(sort_t *a, size_t a_len) {
-  for (size_t i = 0; i < a_len; ++i) {
+  for (size_t i = 0; i < MIN(a_len, 30); ++i) {
     print_element(a[i]);
     printf(" ");
+  }
+  if (a_len > 30) {
+    printf("...");
   }
   printf("\n");
 }
@@ -52,25 +55,29 @@ bool is_sorted(sort_t *a, size_t a_len) {
   return true;
 }
 
-void measure(const char *func_name, void (*func)(sort_t *, size_t), const sort_t *a, size_t a_len) {
+bool array_same(sort_t *a, sort_t *b, size_t len) {
+  for (size_t i = 0; i < len; ++i) {
+    if (a[i] != b[i]) {return false;}
+  }
+  return true;
+}
+
+void measure(const char *func_name, void (*func)(sort_t *, size_t), sort_t *a, size_t a_len, sort_t *sorted) {
   sort_t *a_copy = (sort_t *) malloc(a_len * sizeof(sort_t));
   memcpy(a_copy, a, a_len * sizeof(sort_t));
+
+  printf("Running function %s\n", func_name);
 
   double start_time = get_time_ms();
   func(a_copy, a_len);
   double end_time = get_time_ms();
 
-
-  if (!is_sorted(a_copy, a_len)) {
+  if (!array_same(a_copy, sorted, a_len)) {
     printf("Function %s failed to sort correctly\n", func_name);
-    if (a_len < 20) {
-      printf("Printing resulting array:\n");
-      for (size_t i = 0; i < a_len; ++i) {
-        print_element(a[i]);
-        printf(" ");
-      }
-      printf("\n");
-    }
+    printf("Printing resulting array:\n");
+    print_array(a_copy, a_len);
+    printf("Printing the expected array:\n");
+    print_array(sorted, a_len);
     return;
   }
 
