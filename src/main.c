@@ -30,9 +30,7 @@ int main(int argc, char *argv[]) {
   size_t a_len = atoi(argv[1]);
   sort_t *a = (sort_t *)malloc(a_len * sizeof(sort_t));
   for (size_t i = 0; i < a_len; ++i) {
-    a[i] = rand() % (a_len * 10);
-    // a[i] = rand() % (4);
-    
+    a[i] = rand() % (a_len * 10);    
   }
 
   sort_t *a_sorted = (sort_t *)malloc(a_len * sizeof(sort_t));
@@ -40,14 +38,16 @@ int main(int argc, char *argv[]) {
 
   library_sort(a_sorted, a_len);
 
-
-  printf("Non-parallel algorithms: \n");
+  printf("Non-parallel algorithms: \n\n");
+  
   measure("merge sort", mergesort, a, a_len, a_sorted);
   measure("quicksort", quicksort, a, a_len, a_sorted);
   measure("heapsort", heapsort, a, a_len, a_sorted);
-  measure("radix sort", radixsort, a, a_len, a_sorted);
+  measure("radix sort", radixsort, a, a_len, a_sorted); 
+  measure("radix sort in place", radixsort_in_place, a, a_len, a_sorted);
+  
 
-  printf("\nParallel algorithms: \n");
+  printf("\n\n\nParallel algorithms: \n\n");
   measure("sample sort with qsort", sample_sort_with_qs, a, a_len, a_sorted);
   measure("sample sort with merge sort", sample_sort_with_mergesort, a, a_len, a_sorted);
 

@@ -2,7 +2,6 @@
 #include "util.h"
 #include "sort.h"
 
-
 void quicksort(sort_t *a, size_t a_len) {
   size_t threshold = IS_DEBUG ? 1 : 15;
 
@@ -17,7 +16,6 @@ void quicksort(sort_t *a, size_t a_len) {
   );
   
   sort_t pivot = a[rand() % a_len];
-  
   size_t lt = 0, le = 0;
   
   for (size_t i = 0; i < a_len; ++i) {
@@ -38,7 +36,6 @@ void quicksort(sort_t *a, size_t a_len) {
     printf("Pivot: ");
     print_element(pivot);
     printf("\n");
-
     print_array(a, a_len);
   );
 

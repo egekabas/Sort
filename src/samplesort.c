@@ -46,7 +46,6 @@ void sample_sort(sort_t *a, size_t a_len, void *(*sort) (void *)) {
   IF_DEBUG(
     printf("Array: ");
     print_array(a, a_len);
-
     printf("Samples: ");
     print_array(samples, BUCKET_CNT-1);
   );
@@ -71,7 +70,6 @@ void sample_sort(sort_t *a, size_t a_len, void *(*sort) (void *)) {
   IF_DEBUG(
     printf("Array after partitioning: ");
     print_array(a, a_len);
-  
     printf("Buckets: ");
     for (size_t i = 0; i < BUCKET_CNT-1; ++i) {
       printf("%lu", i);
@@ -91,11 +89,13 @@ void sample_sort(sort_t *a, size_t a_len, void *(*sort) (void *)) {
   jobs[BUCKET_CNT-1].a_len = a_len - cur_beg;
   
   
-  pthread_t threads[BUCKET_CNT];
-  for (size_t i = 0; i < BUCKET_CNT; ++i) {
+  pthread_t threads[BUCKET_CNT-1];
+  for (size_t i = 0; i < BUCKET_CNT-1; ++i) {
     pthread_create(&threads[i], NULL, sort, &jobs[i]);
   }
-  for (size_t i = 0; i < BUCKET_CNT; ++i) {
+  sort(&jobs[BUCKET_CNT-1]);
+
+  for (size_t i = 0; i < BUCKET_CNT-1; ++i) {
     pthread_join(threads[i], NULL);
   }
 }

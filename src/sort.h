@@ -18,6 +18,7 @@ void quicksort(sort_t *a, size_t a_len);
 void heapsort(sort_t *a, size_t a_len);
 
 void radixsort(sort_t *a, size_t a_len);
+void radixsort_in_place(sort_t *a, size_t a_len);
 
 void sample_sort(sort_t *a, size_t a_len, void *(*sort) (void *));
 void sample_sort_with_qs(sort_t *a, size_t a_len);
